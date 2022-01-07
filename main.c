@@ -25,31 +25,16 @@ int main(int ac, char **av)
 
     ft_bzero(&dimensions, sizeof(t_data));
     int **map = get_map_from_fd(av[1], &dimensions);
+    int **map2 = get_map_from_fd(av[1], &dimensions);
     int i,j;
     int x;
     int y = 0;
     int color = 16538725;
 
-    // i = 0;
-    // while(map[i] != 'f')
-    // {
-    //     j = 0;
-    //     while(map[i][j] != 'f')
-    //     {
-    //         if (map[i][j])
-    //             printf(" %d", map[i][j]);
-    //         else
-    //             printf("  %d", map[i][j]);
-    //         j++;
-    //     }
-    //     printf("\n");
-    //     i++;
-    // }
-
     void *mlx;
     void *mlx_win;
-    int width = 600;
-    int height = 600;
+    int width = 1920;
+    int height = 1080;
 
     mlx = mlx_init();
     mlx_win = mlx_new_window(mlx, width, height, "FDF");
@@ -60,17 +45,15 @@ int main(int ac, char **av)
         while(y < dimensions.vertical)
         {
             color = 16538725;
-            if (map[y][x] == 0)
-                color = 3696598;
+            // if (map[y][x] == 0)
+            //     color = 3696598;
             if(x < dimensions.horizontal - 1)
-                drawline(mlx, mlx_win, color, x * 20, y * 20, (x + 1) * 20, y * 20);
+                drawline(mlx, mlx_win, color, x * 3, y * 3, (x + 1) * 3, y * 3);
             if (y < dimensions.vertical - 1)
-                drawline(mlx, mlx_win, color, x * 20, y * 20, x * 20, (y + 1) * 20);
+                drawline(mlx, mlx_win, color, x * 3, y * 3, x * 3, (y + 1) * 3);
 
             y++;
         }
-            // drawline(mlx, mlx_win, color, x * 20, y * 20, (x + 1) * 20, (y) * 20);
-            // drawline(mlx, mlx_win, color, x * 20, y * 20, (x + 1) * 20, y * 20);
         x++;
     }
     mlx_loop (mlx);

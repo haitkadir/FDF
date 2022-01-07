@@ -1,0 +1,4 @@
+remove split in fdf and use this algo rather than it
+in that loop you calling get_next_line create another loop 
+and use atoi to get z by z
+and then increment index to get next z

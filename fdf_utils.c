@@ -10,12 +10,11 @@ void drawline(void *mlx, void *mlx_win,int color , int x0, int y0, int x1, int y
     sy = y0<y1 ? 1 : -1;
     err = dx+dy;  /* error value e_xy */
     while (1)
-    {  /* loop */
-        // plot(x0, y0);
+    { 
         mlx_pixel_put(mlx, mlx_win, x0, y0, color);
         if (x0 == x1 && y0 == y1)
             break;
-        e2 = 2*err;
+        e2 = 2 * err;
         if (e2 >= dy)
         { /* e_xy+e_x > 0 */
             err += dy;
@@ -41,27 +40,73 @@ static int get_y_len(int fd)
         str = get_next_line(fd);
         if(!str)
             break;
-        else
-            free(str);
+        free(str);
         i++;
     }
     return(i);
 }
+
+static int *get_map_child(char *str, int len)
+{
+    int *map_child;
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    map_child = NULL;
+    map_child = (int *)ft_calloc(len + 1, sizeof(int));
+    while(str[i])
+    {
+        if(str[i] == ' '){
+            i++;
+            continue;
+        }
+        else{
+            map_child[j++] = ft_atoi(&str[i]);
+            
+            while(str[i] && str[i] != ' ')
+                i++;
+            continue;
+        }
+    }
+    return(map_child);
+}
+
+static void get_map(int fd,int **map, t_data **dimensions)
+{
+    char *str;
+    int i;
+    int n;
+    int len;
+
+    i = 0;
+    len = 0;
+    n = 0;
+    while(1)
+    {
+        str = NULL;
+        str = get_next_line(fd);
+        if(!str)
+            break;
+        while(str[i])
+            if(str[i++] == ' ' && str[i] != ' ')
+                len++;
+        if((**dimensions).horizontal == 0)
+            (**dimensions).horizontal = len;
+        map[n++] = get_map_child(str, len);
+        if(str)
+            free(str);
+    }
+}
+
 int **get_map_from_fd(char *file_name, t_data *dimensions)
 {
     int **map;
-    int *map_child;
-    char **splited;
-    char *str;
     int fd;
-    int i,j;
     
     map = 0;
-    map_child = 0;
-    splited = 0;
-    str = 0;
     fd = 0;
-
     fd = open(file_name, O_RDONLY);
     dimensions->vertical = get_y_len(fd);
     map = (int **)ft_calloc(dimensions->vertical + 1, sizeof(int *));
@@ -70,36 +115,7 @@ int **get_map_from_fd(char *file_name, t_data *dimensions)
     close(fd);
     fd = 0;
     fd = open(file_name, O_RDONLY);
-    i = 0;
-    while(1)
-    {
-        str = get_next_line(fd);
-        if(!str)
-            break;
-        splited = ft_split(str, ' ');
-        free(str);
-        str = 0;
-        j = 0;
-        while (splited[j])
-            j++;
-        if(dimensions->horizontal == 0)
-            dimensions->horizontal = j;
-        map_child = (int *)ft_calloc(j + 1, sizeof(int));
-        j = 0;
-        while(splited[j])
-        {
-            map_child[j] = ft_atoi(splited[j]);
-            j++;
-        }
-        free(splited);
-        splited = 0;
-        map[i] = map_child;
-        map_child = 0;
-        i++;
-    }
+    get_map(fd, map, &dimensions);
     close(fd);
-
-    // sp = ft_split(get_next_line(fd), ' ');
-
     return (map);
 }
