@@ -24,13 +24,25 @@ int main(int ac, char **av)
     t_data  dimensions;
 
     ft_bzero(&dimensions, sizeof(t_data));
-    int **map = get_map_from_fd(av[1], &dimensions);
-    int **map2 = get_map_from_fd(av[1], &dimensions);
-    int i,j;
+    int ***map = get_map_from_fd(av[1], &dimensions);
+    int i,j,k;
     int x;
     int y = 0;
     int color = 16538725;
+    i = 0;
+    // while(i < dimensions.vertical){
+    //     j = 0;
+    //     while(j < dimensions.horizontal){
 
+    //             printf("%d,", map[i][j][0]);
+    //             printf("%d ", map[i][j][1]);
+
+            
+    //         j++;
+    //     }
+    //     printf("\n");
+    //     i++;
+    // }
     void *mlx;
     void *mlx_win;
     int width = 1920;
@@ -44,14 +56,11 @@ int main(int ac, char **av)
         y = 0;
         while(y < dimensions.vertical)
         {
-            color = 16538725;
-            // if (map[y][x] == 0)
-            //     color = 3696598;
+            color = map[y][x][1];
             if(x < dimensions.horizontal - 1)
-                drawline(mlx, mlx_win, color, x * 3, y * 3, (x + 1) * 3, y * 3);
+                drawline(mlx, mlx_win, color, x * 1, y * 1, (x + 1) * 1, y * 1);
             if (y < dimensions.vertical - 1)
-                drawline(mlx, mlx_win, color, x * 3, y * 3, x * 3, (y + 1) * 3);
-
+                drawline(mlx, mlx_win, color, x * 1, y * 1, x * 1, (y + 1) * 1);
             y++;
         }
         x++;
