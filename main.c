@@ -58,9 +58,9 @@ int main(int ac, char **av)
         {
             color = map[y][x][1];
             if(x < dimensions.horizontal - 1)
-                drawline(mlx, mlx_win, color, x * 1, y * 1, (x + 1) * 1, y * 1);
+                drawline(mlx, mlx_win, color, x * 2, y * 2, (x + 1) * 2, y * 2);
             if (y < dimensions.vertical - 1)
-                drawline(mlx, mlx_win, color, x * 1, y * 1, x * 1, (y + 1) * 1);
+                drawline(mlx, mlx_win, color, x * 2, y * 2, x * 2, (y + 1) * 2);
             y++;
         }
         x++;

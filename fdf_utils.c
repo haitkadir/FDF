@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/11 16:57:23 by haitkadi          #+#    #+#             */
+/*   Updated: 2022/01/11 16:57:36 by haitkadi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 static int ft_ishexa(int c){
@@ -34,7 +46,7 @@ int ft_htoi(char *hexa){
     }
     return (0);
 }
-
+/* ************************************************************************** */
 void drawline(void *mlx, void *mlx_win,int color , int x0, int y0, int x1, int y1)
 {
     int dx, sx,dy,sy,err,e2;
@@ -62,7 +74,7 @@ void drawline(void *mlx, void *mlx_win,int color , int x0, int y0, int x1, int y
         }
     }
 }
-
+/* ************************************************************************** */
 static int get_y_len(int fd)
 {
     char *str;
@@ -80,25 +92,21 @@ static int get_y_len(int fd)
     }
     return(i);
 }
-
-static int **get_map_child(char *str, int len)
+/* ************************************************************************** */
+static int **get_map_child_util(int **map_child, char *str)
 {
-    int **map_child;
     int *child;
     int i;
     int j;
 
     i = 0;
     j = 0;
-    map_child = NULL;
-    map_child = (int **)ft_calloc(len + 1, sizeof(int *));
+    child = NULL;
     while(str[i])
-    {
-        if(str[i] == ' '){
+        if(str[i] == ' ')
             i++;
-            continue;
-        }
-        else{
+        else
+        {
             child = (int *)ft_calloc(2, sizeof(int));
             child[0] = ft_atoi(&str[i]);
             while((str[i] && str[i] != ' ') && (str[i] && str[i] != ','))
@@ -110,12 +118,19 @@ static int **get_map_child(char *str, int len)
             while(str[i] && (str[i] != ' '))
                 i++;
             map_child[j++] = child;
-            continue;
         }
-    }
-    return(map_child);
+    return (map_child);
 }
+/* ************************************************************************** */
+static int **get_map_child(char *str, int len)
+{
+    int **map_child;
 
+    map_child = (int **)ft_calloc(len + 1, sizeof(int *));
+    
+    return(get_map_child_util(map_child, str));
+}
+/* ************************************************************************** */
 static void get_map(int fd,int ***map, t_data **dimensions)
 {
     char *str;
@@ -142,7 +157,7 @@ static void get_map(int fd,int ***map, t_data **dimensions)
             free(str);
     }
 }
-
+/* ************************************************************************** */
 int ***get_map_from_fd(char *file_name, t_data *dimensions)
 {
     int ***map;
