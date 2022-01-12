@@ -1,70 +1,62 @@
 #include "fdf.h"
-// // #include "get_next_line.h"
 
-// void    background(void *mlx, void *mlx_win, int width, int height)
-// {
 
-//     for (int x = 0; x < width; x++)
-//         for (int y = 0; y < height; y++)
-//         {
-//             mlx_pixel_put(mlx, mlx_win, x, y, 9206502);
-//         }
-// }
-// void    letter_line(void *mlx, void *mlx_win, int width, int height)
-// {
-//     for (int x = 50; x < 700; x += width)
-//         for (int y = 50; y < 700; y += height)
-//         {
-//             mlx_pixel_put(mlx, mlx_win, x, y, 16119546);
-//         }
-// }
+void print(int ***map, t_data dimensions){
+    int x;
+    int y;
+
+    y = 0;
+    while(y < dimensions.vertical){
+        x = 0;
+        while(x < dimensions.horizontal){
+            printf("%d ", map[y][x][0]);
+            x++;
+        }
+        printf("\n");
+        y++;
+    }
+}
+static void draw(int ***map, t_data *dimensions, t_mlx *mlx)
+{
+    int x;
+    int y;
+    int color;
+
+    y = 0;
+    while(y < dimensions->vertical)
+    {
+        x = 0;
+        while(x < dimensions->horizontal)
+        {
+            mlx->color = map[y][x][1];
+            if(x < dimensions->horizontal - 1)
+                drawline(mlx, x , y , (x + 1), y , map);
+            if (y < dimensions->vertical - 1)
+                drawline(mlx, x , y , x , (y + 1) , map);
+            x++;
+        }
+        y++;
+    }
+}
 
 int main(int ac, char **av)
 {
     t_data  dimensions;
+    t_mlx mlx;
 
     ft_bzero(&dimensions, sizeof(t_data));
     int ***map = get_map_from_fd(av[1], &dimensions);
-    int i,j,k;
-    int x;
-    int y = 0;
-    int color = 16538725;
-    i = 0;
-    // while(i < dimensions.vertical){
-    //     j = 0;
-    //     while(j < dimensions.horizontal){
+    //print(map,dimensions);
+    int x = 0;
+    int y;
+    printf("%d\n", dimensions.horizontal);
+    printf("%d\n", dimensions.vertical);
 
-    //             printf("%d,", map[i][j][0]);
-    //             printf("%d ", map[i][j][1]);
-
-            
-    //         j++;
-    //     }
-    //     printf("\n");
-    //     i++;
-    // }
-    void *mlx;
-    void *mlx_win;
-    int width = 1920;
-    int height = 1080;
-
-    mlx = mlx_init();
-    mlx_win = mlx_new_window(mlx, width, height, "FDF");
-
-    while(x < dimensions.horizontal)
-    {
-        y = 0;
-        while(y < dimensions.vertical)
-        {
-            color = map[y][x][1];
-            if(x < dimensions.horizontal - 1)
-                drawline(mlx, mlx_win, color, x * 2, y * 2, (x + 1) * 2, y * 2);
-            if (y < dimensions.vertical - 1)
-                drawline(mlx, mlx_win, color, x * 2, y * 2, x * 2, (y + 1) * 2);
-            y++;
-        }
-        x++;
-    }
-    mlx_loop (mlx);
-
+    mlx.zoom = 1;
+    mlx.win_w = 2560;
+    mlx.win_h = 1390;
+    mlx.mlx = mlx_init();
+    mlx.mlx_win = mlx_new_window(mlx.mlx, mlx.win_w, mlx.win_h, "FDF");
+    draw(map, &dimensions, &mlx);
+    mlx_loop (mlx.mlx);
 }

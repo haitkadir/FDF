@@ -47,18 +47,42 @@ int ft_htoi(char *hexa){
     return (0);
 }
 /* ************************************************************************** */
-void drawline(void *mlx, void *mlx_win,int color , int x0, int y0, int x1, int y1)
+
+
+static void    iso_pro(int *x, int *y, int z)
+{
+    int x_tmp;
+    int y_tmp;
+
+    x_tmp = *x;
+    y_tmp = *y;
+    *x = (x_tmp - y_tmp) * cos(0.523599);
+    *y = -z + (x_tmp + y_tmp) * sin(0.523599);
+}
+
+void drawline(t_mlx *mlx, int x0, int y0, int x1, int y1, int ***map)
 {
     int dx, sx,dy,sy,err,e2;
+    int z;
+    int z1;
 
+    z = map[y0][x0][0];
+    z1 = map[y1][x1][0];
+    x0 *= mlx->zoom;
+    y0 *= mlx->zoom;
+    x1 *= mlx->zoom;
+    y1 *= mlx->zoom;
+    iso_pro(&x0, &y0, z);
+    iso_pro(&x1, &y1, z1);
     dx =  abs(x1-x0);
-    sx = x0<x1 ? 1 : -1;
+    sx = x0<x1 ? 1 : -1;// ternary 
     dy = -abs(y1-y0);
-    sy = y0<y1 ? 1 : -1;
+    sy = y0<y1 ? 1 : -1;// ternary 
     err = dx+dy;  /* error value e_xy */
+
     while (1)
     {
-        mlx_pixel_put(mlx, mlx_win, x0, y0, color);
+        mlx_pixel_put(mlx->mlx, mlx->mlx_win, x0 + 600, y0 + 400, mlx->color);
         if (x0 == x1 && y0 == y1)
             break;
         e2 = 2 * err;
@@ -148,7 +172,7 @@ static void get_map(int fd,int ***map, t_data **dimensions)
         if(!str)
             break;
         while(str[i])
-            if(str[i++] == ' ' && str[i] != ' ')
+            if(ft_isdigit(str[i++]) && !ft_isdigit(str[i]))
                 len++;
         if((**dimensions).horizontal == 0)
             (**dimensions).horizontal = len;
