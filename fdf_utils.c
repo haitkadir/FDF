@@ -138,7 +138,7 @@ static int **get_map_child_util(int **map_child, char *str)
             if(str[i] == ',')
                 child[1] = ft_htoi(&str[++i]);
             else
-                child[1] = 0xFFFFFF;
+                child[1] = (21000 * (child[0] + 1 * 400));
             while(str[i] && (str[i] != ' '))
                 i++;
             map_child[j++] = child;
@@ -155,24 +155,28 @@ static int **get_map_child(char *str, int len)
     return(get_map_child_util(map_child, str));
 }
 /* ************************************************************************** */
-static void get_map(int fd,int ***map, t_data **dimensions)
+static void get_map(int fd,int ***map, t_data **dimensions) // more than 25 lines in function
 {
     char *str;
+    char *to_free;
     int i;
     int n;
     int len;
 
     i = 0;
-    len = 0;
+    len = 1;
     n = 0;
     while(1)
     {
         str = NULL;
-        str = get_next_line(fd);
+        to_free = get_next_line(fd);
+        str = ft_strtrim(to_free, " ");
+        free(to_free);
+        to_free = NULL;
         if(!str)
             break;
         while(str[i])
-            if(ft_isdigit(str[i++]) && !ft_isdigit(str[i]))
+            if(str[i++] == ' ' && str[i] != ' ')
                 len++;
         if((**dimensions).horizontal == 0)
             (**dimensions).horizontal = len;

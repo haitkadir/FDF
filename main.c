@@ -52,7 +52,7 @@ int main(int ac, char **av)
     printf("%d\n", dimensions.horizontal);
     printf("%d\n", dimensions.vertical);
 
-    mlx.zoom = 1;
+    mlx.zoom = 20;
     mlx.win_w = 2560;
     mlx.win_h = 1390;
     mlx.mlx = mlx_init();
