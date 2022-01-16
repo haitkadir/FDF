@@ -6,12 +6,12 @@
 # include "./get_next_line/get_next_line.h"
 # include "./libft/libft.h"
 # include <stdio.h>
-// get data
-typedef struct t_data
+// get dimensions
+typedef struct t_dimensions
 {
     int horizontal;
     int vertical;
-}   t_data;
+}   t_dimensions;
 // store mlx options
 typedef struct t_mlx
 {
@@ -22,8 +22,19 @@ typedef struct t_mlx
     int color;
     int zoom;
 }   t_mlx;
+// mlx data
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
+
 // functions
 int ft_htoi(char *hexa);
-int ***get_map_from_fd(char *, t_data *);
-void drawline(t_mlx *, int, int, int, int, int ***);
+int ***get_map_from_fd(char *, t_dimensions *);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void drawline(t_data **, t_mlx, int, int, int, int, int ***);
+
 #endif
