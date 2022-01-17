@@ -12,13 +12,25 @@ typedef struct t_dimensions
     int horizontal;
     int vertical;
 }   t_dimensions;
+// draw line algorithm informations
+typedef struct t_draw
+{
+    int dx;
+    int sx;
+    int dy;
+    int sy;
+    int err;
+    int e2;
+    int z;
+    int z1;
+}   t_draw;
 // store mlx options
 typedef struct t_mlx
 {
-    void *mlx;
-    void *mlx_win;
-    int win_w;
-    int win_h;
+    int x0;
+    int y0;
+    int x1;
+    int y1;
     int color;
     int zoom;
 }   t_mlx;
@@ -32,9 +44,9 @@ typedef struct	s_data {
 }				t_data;
 
 // functions
-int ft_htoi(char *hexa);
-int ***get_map_from_fd(char *, t_dimensions *);
+int     ft_htoi(char *hexa);
+int     ***get_map_from_fd(char *, t_dimensions *);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void drawline(t_data **, t_mlx, int, int, int, int, int ***);
+void    drawline(t_data **, t_mlx, int ***);
 
 #endif

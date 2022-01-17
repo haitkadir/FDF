@@ -1,2 +1,3 @@
 to do 
-    put in image and put image in window
+    optimize functions.
+    close program by esc key event
