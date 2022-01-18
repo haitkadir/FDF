@@ -12,7 +12,7 @@ typedef struct t_dimensions
     int horizontal;
     int vertical;
 }   t_dimensions;
-// draw line algorithm informations
+// draw line algorithm's information
 typedef struct t_draw
 {
     int dx;
@@ -44,9 +44,21 @@ typedef struct	s_data {
 }				t_data;
 
 // functions
+
+/*-------------------------------- Check Errors ------------------------------*/
+
+void check_err(int, t_dimensions **);
+
+/*-------------------------------- Get Data ----------------------------------*/
+
 int     ft_htoi(char *hexa);
+int     get_x_y_len(int, t_dimensions **);
 int     ***get_map_from_fd(char *, t_dimensions *);
+
+/*---------------------------- Drawing In Window -----------------------------*/
+
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void    drawline(t_data **, t_mlx, int ***);
+void    draw(t_data *, int ***, t_dimensions, t_mlx);
 
 #endif

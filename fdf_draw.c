@@ -1,5 +1,16 @@
 #include "fdf.h"
 
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
+
+    if(x < 2550 && y < 1380)
+    {
+	    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	    *(unsigned int*)dst = color;
+    }
+}
 /* ************************************************************************** */
 
 static void    iso_pro(int *x, int *y, int z)
@@ -12,6 +23,7 @@ static void    iso_pro(int *x, int *y, int z)
     *x = (x_tmp - y_tmp ) * cos(0.523599);
     *y = - z + (x_tmp + y_tmp) * sin(0.523599);
 }
+
 static void drawline_util(t_data ***img, t_mlx mlx, t_draw vars)
 {
     while (1)
@@ -21,17 +33,18 @@ static void drawline_util(t_data ***img, t_mlx mlx, t_draw vars)
             break;
         vars.e2 = 2 * vars.err;
         if (vars.e2 >= vars.dy)
-        { /* e_xy+e_x > 0 */
+        {
             vars.err += vars.dy;
             mlx.x0 += vars.sx;
         }
         if (vars.e2 <= vars.dx)
-        { /* e_xy+e_y < 0 */
+        {
             vars.err += vars.dx;
             mlx.y0 += vars.sy;
         }
     }
 }
+
 static void zooming(t_mlx *mlx)
 {
     mlx->x0 *= mlx->zoom;
@@ -39,6 +52,7 @@ static void zooming(t_mlx *mlx)
     mlx->x1 *= mlx->zoom;
     mlx->y1 *= mlx->zoom;
 }
+
 void drawline(t_data **img, t_mlx mlx, int ***map)
 {
     t_draw vars;
