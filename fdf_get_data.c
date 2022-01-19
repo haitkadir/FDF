@@ -22,6 +22,7 @@ static int get_map_child_util(int **map_child, char *str)
 {
     int *child;
     int i;
+    int test = 2;
 
     i = 0;
     child = NULL;
@@ -30,7 +31,7 @@ static int get_map_child_util(int **map_child, char *str)
             i++;
         else
         {
-            child = (int *)ft_calloc(2, sizeof(int));
+            child = (int *)ft_calloc(test -= 2, sizeof(int));
             if(!child)
                 return (-1);
             child[0] = ft_atoi(&str[i]);
@@ -49,27 +50,33 @@ static int get_map_child_util(int **map_child, char *str)
 
 /* ************************************************************************** */
 
-static int **get_map_child(char *str, int len)
+static int **get_map_child(char *str, int len, int *err)
 {
     int **map_child;
 
     map_child = NULL;
     map_child = (int **)ft_calloc(len + 1, sizeof(int *));
     if (!map_child)
-        return (-1);
+    {
+        *err = -1;
+        return (0);
+    }
     if(get_map_child_util(map_child, str) == -1)
-        return (-1);
+        *err = -1;
+
     return(map_child);
 }
 
 /* ************************************************************************** */
 
-static void get_map(int fd,int ***map, t_dimensions **dimensions)
+static int get_map(int fd,int ***map, t_dimensions **dimensions)
 {
     char *str;
     char *to_free;
     int **map_child;
+    int err;
 
+    err = 0;
     map_child = NULL;
     while(1)
     {
@@ -81,13 +88,14 @@ static void get_map(int fd,int ***map, t_dimensions **dimensions)
         to_free = NULL;
         if(!str)
             break;
-        map_child = get_map_child(str, (**dimensions).horizontal);
-        if (map_child == -1)
-            return (-1);
+        map_child = get_map_child(str, (**dimensions).horizontal, &err);
         *map++ = map_child;
         if(str)
             free(str);
+        if (err == -1)
+            return (-1);
     }
+    return (0);
 }
 /* ************************************************************************** */
 int ***get_map_from_fd(char *file_name, t_dimensions *dimensions)
@@ -111,7 +119,8 @@ int ***get_map_from_fd(char *file_name, t_dimensions *dimensions)
     close(fd);
     fd = 0;
     fd = open(file_name, O_RDONLY);
-    get_map(fd, map, &dimensions);
+    if (get_map(fd, map, &dimensions) == -1)
+        alloc_err(map, &dimensions);
     close(fd);
     return (map);
 }

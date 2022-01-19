@@ -47,7 +47,8 @@ typedef struct	s_data {
 
 /*-------------------------------- Check Errors ------------------------------*/
 
-void check_err(int, t_dimensions **);
+void    check_err(int, t_dimensions **);
+void    alloc_err(int ***map, t_dimensions **dimensions);
 
 /*-------------------------------- Get Data ----------------------------------*/
 
