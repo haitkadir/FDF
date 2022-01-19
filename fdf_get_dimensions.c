@@ -27,7 +27,7 @@ int get_x_y_len(int fd, t_dimensions **dimensions)
         str = ft_strtrim(to_free, " \n");
         if(to_free)
             free(to_free);
-        if(!str)
+        if(!str || !ft_isdigit(str[0]))
             break;
         if((**dimensions).horizontal == 0)
             (**dimensions).horizontal = get_len(str);

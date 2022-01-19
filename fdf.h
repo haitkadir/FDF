@@ -38,17 +38,21 @@ typedef struct t_mlx
 typedef struct	s_data {
 	void	*img;
 	char	*addr;
+    void    *mlx;
+    void    *win;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+    t_dimensions dimensions;
+    int ***map;
 }				t_data;
 
 // functions
 
 /*-------------------------------- Check Errors ------------------------------*/
 
-void    check_err(int, t_dimensions **);
-void    alloc_err(int ***map, t_dimensions **dimensions);
+void    err(int, t_dimensions **);
+void    free_3d_arr(int ***map, t_dimensions dimensions);
 
 /*-------------------------------- Get Data ----------------------------------*/
 
@@ -61,5 +65,7 @@ int     ***get_map_from_fd(char *, t_dimensions *);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void    drawline(t_data **, t_mlx, int ***);
 void    draw(t_data *, int ***, t_dimensions, t_mlx);
+
+int	key_hook(int, t_data *);
 
 #endif

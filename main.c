@@ -15,26 +15,24 @@ static void calc_zoom(int *zoom, int width)
 
 static void fdf(char *file_name)
 {
-        t_dimensions  dimensions;
         t_mlx mlx;
-        void	*mlx_ptr;
-        void	*mlx_win;
         t_data	img;
 
-        ft_bzero(&dimensions, sizeof(t_dimensions));
+        ft_bzero(&img.dimensions, sizeof(t_dimensions));
         ft_bzero(&mlx, sizeof(t_mlx));
-        int ***map = get_map_from_fd(file_name, &dimensions);
-        if(dimensions.horizontal == 0 && dimensions.vertical == 0)
+        img.map = get_map_from_fd(file_name, &img.dimensions);
+        if(img.dimensions.horizontal == 0 && img.dimensions.vertical == 0)
             return ;
-        mlx_ptr = mlx_init();
-        mlx_win = mlx_new_window(mlx_ptr, 2550, 1380, "FDF");
-        img.img = mlx_new_image(mlx_ptr, 2550, 1380);
+        img.mlx = mlx_init();
+        img.win = mlx_new_window(img.mlx, 2550, 1380, "FDF");
+        img.img = mlx_new_image(img.mlx, 2550, 1380);
         img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
                                     &img.endian);
-        calc_zoom(&mlx.zoom, dimensions.horizontal);
-        draw(&img, map, dimensions, mlx);
-        mlx_put_image_to_window(mlx_ptr, mlx_win, img.img, 0, 0); 
-        mlx_loop(mlx_ptr);
+        calc_zoom(&mlx.zoom, img.dimensions.horizontal);
+        draw(&img, img.map, img.dimensions, mlx);
+        mlx_put_image_to_window(img.mlx, img.win, img.img, 0, 0);
+        mlx_key_hook(img.win, key_hook, &img);
+        mlx_loop(img.mlx);
 }
 int main(int ac, char **av)
 {

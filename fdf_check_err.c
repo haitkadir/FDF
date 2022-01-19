@@ -1,14 +1,16 @@
 #include "fdf.h"
 
-void check_err(int err, t_dimensions **dimensions)
+void err(int err, t_dimensions **dimensions)
 {
     if(err == 1)
         write(1, "\e[1;31mERROR: Invalid map\e[0m", 30);
+    else if (2)
+        write(1, "\e[1;31mERROR: allocation failed\e[0m", 35);
     (**dimensions).horizontal = 0;
     (**dimensions).vertical = 0;
 }
 
-void alloc_err(int ***map, t_dimensions **dimensions)
+void free_3d_arr(int ***map, t_dimensions dimensions)
 {
     int i;
     int j;
@@ -16,12 +18,12 @@ void alloc_err(int ***map, t_dimensions **dimensions)
     i = 0;
     if (map)
     {
-        while(i < (**dimensions).vertical)
+        while(i < dimensions.vertical)
         {
             if (map[i])
             {
                 j = 0;
-                while(j < (**dimensions).horizontal)
+                while(j < dimensions.horizontal)
                 {
                     if(map[i][j])
                         free(map[i][j]);
@@ -33,8 +35,6 @@ void alloc_err(int ***map, t_dimensions **dimensions)
         }
         free(map);
     }
-    (**dimensions).vertical = 0;
-    (**dimensions).horizontal = 0;
 }
 
 
