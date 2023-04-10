@@ -1,3 +1,0 @@
-to do 
-    optimize functions.
-    close program by esc key event
